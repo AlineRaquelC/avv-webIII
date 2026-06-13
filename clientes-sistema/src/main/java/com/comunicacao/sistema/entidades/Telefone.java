@@ -10,11 +10,12 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Usuario {
-	@Id
+public class Telefone {
+	@Id()
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
 	@Column
-	private String nome;
+	private String ddd;
+	@Column
+	private String numero;
 }
