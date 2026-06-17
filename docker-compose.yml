@@ -1,0 +1,90 @@
+name: avv-webiii
+
+services:
+  auth-service:
+    build:
+      context: .
+      args:
+        PROJECT: auth-service
+    ports:
+      - "8081:8081"
+    networks:
+      - automanager-network
+
+  clientes-service:
+    build:
+      context: .
+      args:
+        PROJECT: clientes-service
+    ports:
+      - "8082:8082"
+    networks:
+      - automanager-network
+
+  funcionarios-service:
+    build:
+      context: .
+      args:
+        PROJECT: funcionarios-service
+    ports:
+      - "8083:8083"
+    networks:
+      - automanager-network
+
+  servicos-service:
+    build:
+      context: .
+      args:
+        PROJECT: servicos-service
+    ports:
+      - "8084:8084"
+    networks:
+      - automanager-network
+
+  veiculos-service:
+    build:
+      context: .
+      args:
+        PROJECT: veiculos-service
+    ports:
+      - "8085:8085"
+    networks:
+      - automanager-network
+
+  vendas-service:
+    build:
+      context: .
+      args:
+        PROJECT: vendas-service
+    ports:
+      - "8086:8086"
+    networks:
+      - automanager-network
+
+  api:
+    build:
+      context: .
+      args:
+        PROJECT: api
+    ports:
+      - "8080:8080"
+    environment:
+      AUTH_SERVICE_URL: http://auth-service:8081
+      CLIENTES_SERVICE_URL: http://clientes-service:8082
+      FUNCIONARIOS_SERVICE_URL: http://funcionarios-service:8083
+      SERVICOS_SERVICE_URL: http://servicos-service:8084
+      VEICULOS_SERVICE_URL: http://veiculos-service:8085
+      VENDAS_SERVICE_URL: http://vendas-service:8086
+    depends_on:
+      - auth-service
+      - clientes-service
+      - funcionarios-service
+      - servicos-service
+      - veiculos-service
+      - vendas-service
+    networks:
+      - automanager-network
+
+networks:
+  automanager-network:
+    driver: bridge

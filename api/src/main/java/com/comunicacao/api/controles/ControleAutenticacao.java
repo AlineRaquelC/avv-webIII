@@ -12,11 +12,14 @@ import org.springframework.web.client.RestTemplate;
 
 import com.comunicacao.api.modelos.Login;
 import com.comunicacao.api.seguranca.JwtUtil;
+import org.springframework.beans.factory.annotation.Value;
 
 @RestController
 public class ControleAutenticacao {
 
 	private JwtUtil jwtUtil;
+	@Value("${auth.service.url:http://localhost:8081}")
+    private String authServiceUrl;
 
 	public ControleAutenticacao(JwtUtil jwtUtil) {
 		this.jwtUtil = jwtUtil;
@@ -26,10 +29,10 @@ public class ControleAutenticacao {
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody Login login) {
 		try {
-			ResponseEntity<Map> respostaUsuario = new RestTemplate()
-					.postForEntity("http://localhost:8080/usuarios/login", login, Map.class);
+			ResponseEntity<?> respostaUsuario = new RestTemplate()
+					.postForEntity(authServiceUrl + "/usuarios/login", login, Map.class);
 
-			Map<String, String> usuario = respostaUsuario.getBody();
+			Map<String, String> usuario = (Map<String, String>) respostaUsuario.getBody();
 
 			String token = jwtUtil.gerarToken(usuario.get("login"), usuario.get("perfil"));
 
