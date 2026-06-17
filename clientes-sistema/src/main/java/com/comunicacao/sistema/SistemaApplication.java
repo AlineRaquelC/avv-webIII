@@ -14,6 +14,8 @@ import com.comunicacao.sistema.entidades.Funcionario;
 import com.comunicacao.sistema.entidades.ServicoMercadoria;
 import com.comunicacao.sistema.entidades.Venda;
 import com.comunicacao.sistema.entidades.Veiculo;
+import com.comunicacao.sistema.entidades.Usuario;
+import com.comunicacao.sistema.repositorios.RepositorioUsuario;
 
 
 import java.text.SimpleDateFormat;
@@ -30,6 +32,8 @@ public class SistemaApplication implements CommandLineRunner {
 
 	@Autowired
 	private RepositorioEmpresa repositorio;
+	@Autowired
+    private RepositorioUsuario repositorioUsuario;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SistemaApplication.class, args);
@@ -39,6 +43,14 @@ public class SistemaApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+
+		if (repositorioUsuario.count() == 0) {
+	    Usuario usuario = new Usuario();
+	    usuario.setLogin("admin");
+	    usuario.setSenha("123");
+	    usuario.setPerfil("ADMIN");
+	    repositorioUsuario.save(usuario);
+}
 
 		if (repositorio.count() > 0) {
 			return;
